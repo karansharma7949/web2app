@@ -43,7 +43,7 @@ export async function POST(request) {
 
     console.log("data: ", buildPayload)
     // Make request to build server
-    const buildResponse = await fetch("http://localhost:3000/build-apk", {
+    const buildResponse = await fetch("https://flutterapkbuilder-production.up.railway.app/build-apk", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
