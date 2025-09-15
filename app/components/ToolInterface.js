@@ -22,6 +22,7 @@ export default function ToolInterface() {
   const [currentStep, setCurrentStep] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState(null);
   const [error, setError] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // small helper to time step changes
   const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -139,24 +140,33 @@ export default function ToolInterface() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     console.log('Download button clicked');
     console.log('downloadUrl:', downloadUrl);
     
     if (downloadUrl) {
       console.log('Attempting to download from:', downloadUrl);
+      setIsDownloading(true);
       
-      // Use local API proxy to avoid CORS issues
-      const filename = `${formData.appName || 'MyApp'}.apk`;
-      const proxyUrl = `/api/download-apk?url=${encodeURIComponent(downloadUrl)}&filename=${encodeURIComponent(filename)}`;
-      
-      // Create a temporary link element and trigger download
-      const link = document.createElement('a');
-      link.href = proxyUrl;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      try {
+        // Use local API proxy to avoid CORS issues
+        const filename = `${formData.appName || 'MyApp'}.apk`;
+        const proxyUrl = `/api/download-apk?url=${encodeURIComponent(downloadUrl)}&filename=${encodeURIComponent(filename)}`;
+        
+        // Create a temporary link element and trigger download
+        const link = document.createElement('a');
+        link.href = proxyUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Reset download state after a delay
+        setTimeout(() => setIsDownloading(false), 3000);
+      } catch (error) {
+        console.error('Download error:', error);
+        setIsDownloading(false);
+      }
     } else {
       console.error('No download URL available');
       alert('Download URL is not available. Please try generating the app again.');
@@ -282,16 +292,26 @@ export default function ToolInterface() {
         {/* If build is completed, show a dedicated download UI and hide the full form/preview */}
         {isGenerated && downloadUrl ? (
           <div id="download-section" className="mt-12 text-center py-20">
-            <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
-              <h2 className="text-2xl font-bold mb-4">Your App is Ready! 🎉</h2>
-              <p className="mb-6 text-gray-600 dark:text-gray-300">Download your Android APK file below.</p>
+            <div className="max-w-2xl mx-auto bg-green-50 dark:bg-gray-900 border-2 border-green-200 dark:border-green-800 p-8 rounded-lg shadow-lg">
+              <h2 className="text-2xl font-bold mb-4 text-green-800 dark:text-green-200">Your App is Ready! 🎉</h2>
+              <p className="mb-6 text-green-700 dark:text-green-300">Download your Android APK file below.</p>
               <div className="space-y-4">
                 <button
                   onClick={handleDownload}
-                  className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+                  disabled={isDownloading}
+                  className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
-                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                  Download APK
+                  {isDownloading ? (
+                    <>
+                      <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Preparing Download...
+                    </>
+                  ) : (
+                    <>
+                      <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                      Download APK
+                    </>
+                  )}
                 </button>
                 <div className="mt-8">
                   <button
@@ -603,10 +623,20 @@ export default function ToolInterface() {
 
                 <button
                   onClick={handleDownload}
-                  className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors flex items-center justify-center"
+                  disabled={isDownloading}
+                  className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors flex items-center justify-center"
                 >
-                  <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                  Download APK
+                  {isDownloading ? (
+                    <>
+                      <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Preparing Download...
+                    </>
+                  ) : (
+                    <>
+                      <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                      Download APK
+                    </>
+                  )}
                 </button>
 
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">

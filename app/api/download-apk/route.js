@@ -17,15 +17,20 @@ export async function GET(request) {
       throw new Error(`Failed to fetch file: ${response.statusText}`);
     }
 
-    const fileBuffer = await response.arrayBuffer();
+    // Stream the response instead of buffering it entirely
+    const headers = new Headers();
+    headers.set('Content-Type', 'application/vnd.android.package-archive');
+    headers.set('Content-Disposition', `attachment; filename="${filename}"`);
+    
+    // Forward content-length if available
+    const contentLength = response.headers.get('content-length');
+    if (contentLength) {
+      headers.set('Content-Length', contentLength);
+    }
 
-    // Return the file with proper headers
-    return new NextResponse(fileBuffer, {
-      headers: {
-        'Content-Type': 'application/vnd.android.package-archive',
-        'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': fileBuffer.byteLength.toString(),
-      },
+    // Stream the file directly without buffering
+    return new NextResponse(response.body, {
+      headers,
     });
 
   } catch (error) {
