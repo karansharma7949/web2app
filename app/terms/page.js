@@ -89,10 +89,10 @@ export default function TermsOfService() {
                   You may not use our service to:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
-                  <li>Create apps from websites you don't own</li>
+                  <li>Create apps from websites you don&apos;t own</li>
                   <li>Generate apps containing illegal content</li>
                   <li>Violate any applicable laws or regulations</li>
-                  <li>Infringe on others' intellectual property rights</li>
+                  <li>Infringe on others&apos; intellectual property rights</li>
                   <li>Distribute malware or harmful software</li>
                 </ul>
               </section>
@@ -112,7 +112,7 @@ export default function TermsOfService() {
                   6. Disclaimer of Warranties
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Our service is provided "as is" without any warranties. We do not guarantee 
+                  Our service is provided &quot;as is&quot; without any warranties. We do not guarantee 
                   that the service will be uninterrupted, secure, or error-free.
                 </p>
               </section>

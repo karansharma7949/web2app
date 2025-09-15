@@ -439,7 +439,7 @@ export default function ToolInterface() {
             {/* Features List */}
             <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800">
               <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                What you'll get:
+                What you&apos;ll get:
               </h4>
               <div className="space-y-3">
                 {[

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
 
 export default function Header({ isDarkMode, toggleTheme }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -51,12 +52,12 @@ export default function Header({ isDarkMode, toggleTheme }) {
                   Sign In
                 </button>
               </SignInButton>
-              <a 
+              <Link 
                 href="/sign-up" 
                 className="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
               >
                 Sign Up
-              </a>
+              </Link>
             </SignedOut>
             <SignedIn>
               <UserButton />
@@ -106,12 +107,12 @@ export default function Header({ isDarkMode, toggleTheme }) {
                     Sign In
                   </button>
                 </SignInButton>
-                <a 
+                <Link 
                   href="/sign-up" 
                   className="block w-full bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-4 py-2 rounded-md text-sm font-medium text-center hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
                 >
                   Sign Up
-                </a>
+                </Link>
               </SignedOut>
               <SignedIn>
                 <div className="flex justify-center">
