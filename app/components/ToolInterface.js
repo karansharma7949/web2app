@@ -135,20 +135,31 @@ export default function ToolInterface() {
       console.error('Error generating app:', error);
       setError(error.message);
     } finally {
-      // Close the loading overlay after we either finished or errored
       setIsGenerating(false);
     }
   };
 
   const handleDownload = () => {
+    console.log('Download button clicked');
+    console.log('downloadUrl:', downloadUrl);
+    
     if (downloadUrl) {
+      console.log('Attempting to download from:', downloadUrl);
+      
+      // Use local API proxy to avoid CORS issues
+      const filename = `${formData.appName || 'MyApp'}.apk`;
+      const proxyUrl = `/api/download-apk?url=${encodeURIComponent(downloadUrl)}&filename=${encodeURIComponent(filename)}`;
+      
       // Create a temporary link element and trigger download
       const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = `${formData.appName || 'MyApp'}.apk`;
+      link.href = proxyUrl;
+      link.download = filename;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+    } else {
+      console.error('No download URL available');
+      alert('Download URL is not available. Please try generating the app again.');
     }
   };
 
@@ -586,7 +597,7 @@ export default function ToolInterface() {
             {isGenerated && downloadUrl && (
               <div className="mt-8 text-center">
                 <div className="inline-flex items-center px-4 py-2 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 rounded-lg text-sm font-medium mb-4">
-                  <CheckCircleIcon className="h-4 w-4 mr-2" />
+                  <CheckCircleIcon className="h-4 w-4 mr-2 text-green-600" />
                   App Generated Successfully!
                 </div>
 
