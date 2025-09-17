@@ -21,6 +21,8 @@ export default function ToolInterface() {
   const [isGenerated, setIsGenerated] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [downloadUrl, setDownloadUrl] = useState(null);
+  const [downloadAab, setDownloadAab] = useState(null);
+  const [buildResult, setBuildResult] = useState(null);
   const [error, setError] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -32,7 +34,7 @@ export default function ToolInterface() {
     "Extracting Flutter template...",
     "Configuring WebView settings...",
     "Generating app icons...",
-    "Building Android APK...",
+    "Building Android APK and AAB...",
     "Optimizing app performance...",
     "Signing APK with certificate...",
     "Finalizing app package...",
@@ -59,6 +61,8 @@ export default function ToolInterface() {
     setCurrentStep(0);
     setError(null);
     setDownloadUrl(null);
+    setDownloadAab(null);
+    setBuildResult(null);
     
     try {
       // Require a logo upload; do not proceed silently without it
@@ -123,6 +127,8 @@ export default function ToolInterface() {
       
       if (result.success && result.downloadUrl) {
         setDownloadUrl(result.downloadUrl);
+        setDownloadAab(result.downloadAab);
+        setBuildResult(result);
         // Quickly show the remaining steps (5..8) then close the overlay
         for (let i = 5; i < buildingSteps.length; i++) {
           setCurrentStep(i);
@@ -140,18 +146,19 @@ export default function ToolInterface() {
     }
   };
 
-  const handleDownload = async () => {
-    console.log('Download button clicked');
-    console.log('downloadUrl:', downloadUrl);
+  const handleDownload = async (type = 'apk') => {
+    console.log(`Download ${type.toUpperCase()} button clicked`);
+    const url = type === 'apk' ? downloadUrl : downloadAab;
+    console.log(`${type}Url:`, url);
     
-    if (downloadUrl) {
-      console.log('Attempting to download from:', downloadUrl);
+    if (url) {
+      console.log('Attempting to download from:', url);
       setIsDownloading(true);
       
       try {
         // Use local API proxy to avoid CORS issues
-        const filename = `${formData.appName || 'MyApp'}.apk`;
-        const proxyUrl = `/api/download-apk?url=${encodeURIComponent(downloadUrl)}&filename=${encodeURIComponent(filename)}`;
+        const filename = `${formData.appName || 'MyApp'}.${type}`;
+        const proxyUrl = `/api/download-apk?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
         
         // Create a temporary link element and trigger download
         const link = document.createElement('a');
@@ -168,8 +175,8 @@ export default function ToolInterface() {
         setIsDownloading(false);
       }
     } else {
-      console.error('No download URL available');
-      alert('Download URL is not available. Please try generating the app again.');
+      console.error(`No ${type.toUpperCase()} download URL available`);
+      alert(`${type.toUpperCase()} download URL is not available. Please try generating the app again.`);
     }
   };
 
@@ -184,7 +191,7 @@ export default function ToolInterface() {
   }, [downloadUrl, isGenerating]);
 
   return (
-    <section id="tool-interface" className="py-24 bg-gray-50 dark:bg-gray-900/50 relative">
+    <section id="tool-interface" className="py-24 bg-gray-900 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Loading Overlay */}
@@ -294,12 +301,13 @@ export default function ToolInterface() {
           <div id="download-section" className="mt-12 text-center py-20">
             <div className="max-w-2xl mx-auto bg-green-50 dark:bg-gray-900 border-2 border-green-200 dark:border-green-800 p-8 rounded-lg shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-green-800 dark:text-green-200">Your App is Ready! 🎉</h2>
-              <p className="mb-6 text-green-700 dark:text-green-300">Download your Android APK file below.</p>
+              <p className="mb-6 text-green-700 dark:text-green-300">Download your Android app files below.</p>
               <div className="space-y-4">
+                {/* APK Download Button */}
                 <button
-                  onClick={handleDownload}
+                  onClick={() => handleDownload('apk')}
                   disabled={isDownloading}
-                  className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 mr-4"
                 >
                   {isDownloading ? (
                     <>
@@ -313,10 +321,36 @@ export default function ToolInterface() {
                     </>
                   )}
                 </button>
+                
+                {/* AAB Download Button with Play Store Icon */}
+                {downloadAab && (
+                  <button
+                    onClick={() => handleDownload('aab')}
+                    disabled={isDownloading}
+                    className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  >
+                    {isDownloading ? (
+                      <>
+                        <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Preparing Download...
+                      </>
+                    ) : (
+                      <>
+                        {/* Play Store Icon */}
+                        <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                        </svg>
+                        Download AAB (Play Store)
+                      </>
+                    )}
+                  </button>
+                )}
                 <div className="mt-8">
                   <button
                     onClick={() => {
                       setDownloadUrl(null);
+                      setDownloadAab(null);
+                      setBuildResult(null);
                       setFormData({ websiteUrl: '', appName: '', appDescription: '' });
                       setLogoFile(null);
                       setLogoFileObject(null);
@@ -621,23 +655,47 @@ export default function ToolInterface() {
                   App Generated Successfully!
                 </div>
 
-                <button
-                  onClick={handleDownload}
-                  disabled={isDownloading}
-                  className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors flex items-center justify-center"
-                >
-                  {isDownloading ? (
-                    <>
-                      <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Preparing Download...
-                    </>
-                  ) : (
-                    <>
-                      <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
-                      Download APK
-                    </>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => handleDownload('apk')}
+                    disabled={isDownloading}
+                    className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors flex items-center justify-center"
+                  >
+                    {isDownloading ? (
+                      <>
+                        <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Preparing Download...
+                      </>
+                    ) : (
+                      <>
+                        <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
+                        Download APK
+                      </>
+                    )}
+                  </button>
+                  
+                  {downloadAab && (
+                    <button
+                      onClick={() => handleDownload('aab')}
+                      disabled={isDownloading}
+                      className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors flex items-center justify-center"
+                    >
+                      {isDownloading ? (
+                        <>
+                          <div className="inline-block animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                          Preparing Download...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.61 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                          </svg>
+                          Download AAB (Play Store)
+                        </>
+                      )}
+                    </button>
                   )}
-                </button>
+                </div>
 
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-3">
                   Compatible with Android 5.0+ • Ready for Google Play

@@ -29,7 +29,7 @@ export async function POST(request) {
     const userId = user.id;
 
     // Generate package name from app name
-    const packageName = `com.web2app.${appName.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+    const packageName = `com.launchapp.${appName.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
 
     // Prepare payload for build server
     const buildPayload = {
@@ -63,11 +63,24 @@ export async function POST(request) {
     const buildResult = await buildResponse.json();
     console.log("Build server response:", buildResult);
 
-    // Return the download URL from build server
+    // Return the download URLs from build server (both APK and AAB)
     return NextResponse.json({
       success: true,
+      buildId: buildResult.buildId,
+      message: "APK and AAB built successfully",
       downloadUrl: buildResult.downloadUrl || buildResult.download_url,
-      message: "APK built successfully"
+      downloadAab: buildResult.downloadAab,
+      downloads: {
+        apk: {
+          url: buildResult.downloads?.apk?.url || buildResult.downloadUrl || buildResult.download_url,
+          path: buildResult.downloads?.apk?.path
+        },
+        aab: {
+          url: buildResult.downloads?.aab?.url || buildResult.downloadAab,
+          path: buildResult.downloads?.aab?.path
+        }
+      },
+      buildDetails: buildResult.buildDetails || {}
     });
 
   } catch (error) {

@@ -155,7 +155,7 @@ export default function TermsOfService() {
                   For questions about these Terms of Service, contact us at:
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 mt-2">
-                  Email: legal@web2app.com
+                  Email: legal@launchapp.com
                 </p>
               </section>
             </div>

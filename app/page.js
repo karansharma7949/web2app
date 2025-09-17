@@ -65,9 +65,9 @@ export default function Home() {
         <meta property="twitter:image" content="/twitter-image.jpg" />
       </Head>
 
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-gray-950 transition-colors duration-300">
         <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-        <main>
+        <main className="pt-20">
           <Hero />
           <ToolInterface />
         </main>

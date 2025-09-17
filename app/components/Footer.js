@@ -9,9 +9,15 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3">
-                <span className="text-gray-900 font-bold text-sm">W2A</span>
+                <svg className="w-5 h-5 text-gray-900" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C13.5 2 15 3.5 15 5V12C15 13.5 13.5 15 12 15C10.5 15 9 13.5 9 12V5C9 3.5 10.5 2 12 2Z"/>
+                  <path d="M12 15L11 18L9 20L10 22L12 21L14 22L15 20L13 18L12 15Z"/>
+                  <path d="M7 9L9 10V14L7 15V9Z"/>
+                  <path d="M17 9L15 10V14L17 15V9Z"/>
+                  <circle cx="12" cy="8" r="1.5" fill="rgba(0,0,0,0.3)"/>
+                </svg>
               </div>
-              <span className="text-xl font-bold text-white">Web2App</span>
+              <span className="text-xl font-bold text-white">Launchapp</span>
             </div>
             <p className="text-gray-400 mb-6">
               Transform any website into a professional mobile app in minutes.

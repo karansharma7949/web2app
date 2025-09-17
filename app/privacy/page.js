@@ -121,7 +121,7 @@ export default function PrivacyPolicy() {
                   If you have any questions about this Privacy Policy, please contact us at:
                 </p>
                 <p className="text-gray-600 dark:text-gray-400 mt-2">
-                  Email: privacy@web2app.com
+                  Email: privacy@launchapp.com
                 </p>
               </section>
             </div>
