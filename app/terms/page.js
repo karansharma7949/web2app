@@ -45,7 +45,7 @@ export default function TermsOfService() {
                   1. Acceptance of Terms
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  By accessing and using Web2App, you accept and agree to be bound by the terms 
+                  By accessing and using Launchapp, you accept and agree to be bound by the terms 
                   and provision of this agreement.
                 </p>
               </section>
@@ -55,7 +55,7 @@ export default function TermsOfService() {
                   2. Service Description
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Web2App is a service that converts websites into mobile applications. We provide:
+                  Launchapp is a service that converts websites into mobile applications. We provide:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 dark:text-gray-400 space-y-2">
                   <li>Website to Android app conversion</li>
@@ -102,7 +102,7 @@ export default function TermsOfService() {
                   5. Intellectual Property
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  You retain ownership of your content and generated apps. Web2App retains 
+                  You retain ownership of your content and generated apps. Launchapp retains 
                   ownership of the platform and underlying technology.
                 </p>
               </section>
@@ -122,7 +122,7 @@ export default function TermsOfService() {
                   7. Limitation of Liability
                 </h2>
                 <p className="text-gray-600 dark:text-gray-400 mb-4">
-                  Web2App shall not be liable for any indirect, incidental, special, or 
+                  Launchapp shall not be liable for any indirect, incidental, special, or 
                   consequential damages arising from your use of our service.
                 </p>
               </section>

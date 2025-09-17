@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { SignIn } from '@clerk/nextjs';
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline';
+import Header from '../../components/Header';
 
 export default function Page() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -51,49 +51,17 @@ export default function Page() {
           color: ${isDarkMode ? '#9ca3af' : '#6b7280'} !important;
         }
       `}</style>
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <div className="w-8 h-8 bg-gray-900 dark:bg-white rounded-lg flex items-center justify-center">
-                  <span className="text-white dark:text-gray-900 font-semibold text-sm">W2A</span>
-                </div>
-                <span className="ml-3 text-lg font-semibold text-gray-900 dark:text-white">
-                  Web2App
-                </span>
-              </div>
-            </div>
-
-            {/* Theme Toggle */}
-            <div className="flex items-center">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Toggle theme"
-              >
-                {isDarkMode ? (
-                  <SunIcon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                ) : (
-                  <MoonIcon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
 
       {/* Main Content */}
-      <main className="flex items-center justify-center px-4 py-12">
+      <main className="flex items-center justify-center px-4 py-12 pt-32">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               Welcome back
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-              Sign in to your Web2App account
+              Sign in to your Launchapp account
             </p>
           </div>
           <SignIn 

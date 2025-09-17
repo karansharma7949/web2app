@@ -30,20 +30,20 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Web2App - Transform Websites into Mobile Apps</title>
+        <title>Launchapp - Transform Websites into Mobile Apps</title>
         <meta
           name="description"
-          content="Convert any website into a professional mobile app in minutes. No coding required. Generate Android apps instantly with Web2App."
+          content="Convert any website into a professional mobile app in minutes. No coding required. Generate Android apps instantly with Launchapp."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://web2app.com/" />
+        <meta property="og:url" content="https://launchapp.com/" />
         <meta
           property="og:title"
-          content="Web2App - Transform Websites into Mobile Apps"
+          content="Launchapp - Transform Websites into Mobile Apps"
         />
         <meta
           property="og:description"
@@ -53,10 +53,10 @@ export default function Home() {
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://web2app.com/" />
+        <meta property="twitter:url" content="https://launchapp.com/" />
         <meta
           property="twitter:title"
-          content="Web2App - Transform Websites into Mobile Apps"
+          content="Launchapp - Transform Websites into Mobile Apps"
         />
         <meta
           property="twitter:description"
