@@ -74,7 +74,7 @@ export default function Footer() {
         <div className="pt-8 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-sm">
-              © 2025 Web2App. All rights reserved.
+              © 2025 launchapp. All rights reserved.
             </div>
             <div className="flex items-center space-x-6">
               <a
