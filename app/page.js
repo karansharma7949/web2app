@@ -40,7 +40,7 @@ export default function Home() {
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://launchapp.com/" />
+        <meta property="og:url" content="https://web2app-ten.vercel.app/" />
         <meta
           property="og:title"
           content="Launchapp - Transform Websites into Mobile Apps"
@@ -53,7 +53,7 @@ export default function Home() {
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content="https://launchapp.com/" />
+        <meta property="twitter:url" content="https://web2app-ten.vercel.app/" />
         <meta
           property="twitter:title"
           content="Launchapp - Transform Websites into Mobile Apps"
