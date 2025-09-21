@@ -7,3 +7,59 @@
     animation-delay: 4s;
   }
 }
+
+/* AdSense-specific styles to prevent overflow and ensure proper display */
+.adsense-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.adsense-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.adsbygoogle {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 320px !important;
+  min-height: 250px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* Prevent AdSense from injecting unwanted styles */
+.adsbygoogle[style*="height: auto"] {
+  height: 320px !important;
+}
+
+.adsbygoogle[style*="overflow: hidden"] {
+  overflow: hidden !important;
+}
+
+/* Ensure responsive behavior */
+@media (max-width: 1024px) {
+  .adsense-container,
+  .adsense-wrapper,
+  .adsbygoogle {
+    display: none !important;
+  }
+}
+
+/* Fallback styling for when ads don't load */
+.adsense-fallback {
+  width: 100% !important;
+  height: 320px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px dashed #ccc !important;
+  border-radius: 4px !important;
+  box-sizing: border-box !important;
+}

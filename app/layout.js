@@ -4,6 +4,7 @@ import {
   ClerkProvider,
 } from "@clerk/nextjs";
 import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

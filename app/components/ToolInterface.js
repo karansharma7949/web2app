@@ -8,6 +8,7 @@ import {
   CogIcon
 } from '@heroicons/react/24/outline';
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
+import GoogleAdSense from './GoogleAdSense';
 
 export default function ToolInterface() {
   const [formData, setFormData] = useState({
@@ -232,7 +233,7 @@ export default function ToolInterface() {
                                     {step}
                                   </span>
                                 </div>
-                                {step === "Building Android APK..." && index === currentStep && (
+                                {step === "Building Android APK and AAB..." && index === currentStep && (
                                   <p className="text-xs text-orange-600 dark:text-orange-400 mt-1 ml-5 sm:ml-6">
                                     This could take 5-6 minutes. Do not close your browser window.
                                   </p>
@@ -247,15 +248,27 @@ export default function ToolInterface() {
                     {/* Right Side - Ad Space (Hidden on mobile) */}
                     <div className="hidden lg:flex lg:w-72 xl:w-80 flex-col justify-center">
                       <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 h-full flex flex-col justify-center">
-                        <div className="text-center">
-                          <p className="text-lg text-gray-500 dark:text-gray-400 mb-6">Advertisement</p>
-                          <div className="h-80 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                            <p className="text-gray-400 dark:text-gray-500 text-base">
-                              Ad content will appear here<br/>
-                              <span className="text-sm">(320x400 banner space)</span>
-                            </p>
+                        
+                          <div className="adsense-wrapper" style={{
+                            width: '100%',
+                            maxWidth: '100%',
+                            overflow: 'hidden',
+                            boxSizing: 'border-box',
+                            position: 'relative'
+                          }}>
+                            <GoogleAdSense 
+                              slot="2255847145" 
+                              style={{ 
+                                display: 'block', 
+                                width: '100%', 
+                                height: '320px',
+                                maxWidth: '100%',
+                                boxSizing: 'border-box'
+                              }}
+                              className="adsense-component"
+                            />
                           </div>
-                        </div>
+                       
                       </div>
                     </div>
                   </div>
@@ -431,7 +444,35 @@ export default function ToolInterface() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   App Logo
                 </label>
-                <div className="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-700 border-dashed rounded-md">
+                <div
+                  className={`mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md cursor-pointer transition-colors ${
+                    logoFile
+                      ? 'border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900/10'
+                      : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'
+                  }`}
+                  onClick={() => {
+                    if (!logoFile) {
+                      document.getElementById('logo-upload').click();
+                    }
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.add('border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/10');
+                  }}
+                  onDragLeave={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/10');
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.classList.remove('border-blue-400', 'bg-blue-50', 'dark:bg-blue-900/10');
+                    const file = e.dataTransfer.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                      setLogoFile(URL.createObjectURL(file));
+                      setLogoFileObject(file);
+                    }
+                  }}
+                >
                   <div className="space-y-1 text-center">
                     {logoFile ? (
                       <div className="relative">
@@ -442,30 +483,25 @@ export default function ToolInterface() {
                         />
                         <button
                           type="button"
-                          onClick={() => setLogoFile(null)}
-                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setLogoFile(null);
+                            setLogoFileObject(null);
+                            document.getElementById('logo-upload').value = '';
+                          }}
+                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1 text-xs hover:bg-red-600 transition-colors"
                         >
                           ×
                         </button>
+                        <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+                          Logo uploaded successfully! Click to change.
+                        </p>
                       </div>
                     ) : (
                       <>
                         <CloudArrowUpIcon className="mx-auto h-12 w-12 text-gray-400" />
                         <div className="flex text-sm text-gray-600 dark:text-gray-400">
-                          <label
-                            htmlFor="logo-upload"
-                            className="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-gray-600 dark:text-gray-400 hover:text-gray-500"
-                          >
-                            <span>Upload a file</span>
-                            <input
-                              id="logo-upload"
-                              name="logo-upload"
-                              type="file"
-                              className="sr-only"
-                              accept="image/*"
-                              onChange={handleLogoUpload}
-                            />
-                          </label>
+                          <span className="font-medium">Click to upload</span>
                           <p className="pl-1">or drag and drop</p>
                         </div>
                         <p className="text-xs text-gray-500">
@@ -475,6 +511,14 @@ export default function ToolInterface() {
                     )}
                   </div>
                 </div>
+                <input
+                  id="logo-upload"
+                  name="logo-upload"
+                  type="file"
+                  className="sr-only"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                />
               </div>
 
               {/* Primary color removed */}
@@ -646,6 +690,7 @@ export default function ToolInterface() {
             <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
               Splash screen preview
             </p>
+            
 
             {/* Download Section */}
             {isGenerated && downloadUrl && (
