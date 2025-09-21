@@ -72,6 +72,13 @@ export default function RootLayout({ children }) {
         <head>
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
+          {/* AdSense Script - Required for ad serving */}
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3648081589447801"
+            crossOrigin="anonymous"
+          ></script>
+
           {/* SEO Meta Tags */}
           <meta name="keywords" content="mobile app builder, website to app, android app generator, web to mobile, no code app builder, app creator, mobile app development" />
           <meta name="author" content="Launchapp Team" />

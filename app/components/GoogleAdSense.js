@@ -17,26 +17,26 @@ export default function GoogleAdSense({
   // Load AdSense script dynamically to avoid hydration issues
   useEffect(() => {
     const loadAdSenseScript = () => {
-      // Check if script is already loaded
+      // Check if script is already loaded (should be loaded from layout.js)
       if (document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
-        console.log('✅ AdSense script already loaded');
+        console.log('✅ AdSense script already loaded from head section');
         setScriptLoaded(true);
         return;
       }
 
-      // Create and load the script
+      // Fallback: Create and load the script if not found
       const script = document.createElement('script');
       script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3648081589447801';
       script.crossOrigin = 'anonymous';
       script.async = true;
 
       script.onload = () => {
-        console.log('✅ AdSense script loaded successfully');
+        console.log('✅ AdSense script loaded successfully (fallback)');
         setScriptLoaded(true);
       };
 
       script.onerror = () => {
-        console.error('❌ AdSense script failed to load');
+        console.error('❌ AdSense script failed to load (fallback)');
         setAdStatus('script_error');
       };
 
